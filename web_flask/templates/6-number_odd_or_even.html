@@ -1,21 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Check if a number is even or odd with HBNB">
-    <title>HBNB - Number Evaluation</title>
-</head>
-<body>
-    <header>
-        <h1>HBNB - Number Evaluation</h1>
-    </header>
-    <main>
-        <h2>Number Evaluation Result</h2>
-        <p>The number <strong>{{ n }}</strong> is <strong>{{ evenness }}</strong>.</p>
-    </main>
-    <footer>
-        <p>&copy; 2023 HBNB Inc.</p>
-    </footer>
-</body>
-</html>
+<HTML lang="en">
+    <HEAD>
+        <TITLE>HBNB</TITLE>
+    </HEAD>
+    <BODY>
+	{% if n is divisibleby(2) %}<H1>Number: {{ n }}  is even</H1>{% else %}<H1>Number: {{ n }} is odd</h1>{% endif %}
+    </BODY>
+</HTML>

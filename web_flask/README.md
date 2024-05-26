@@ -1,1 +1,1 @@
-Flask framework and corresp. files
+This project is about flask

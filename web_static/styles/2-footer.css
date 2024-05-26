@@ -1,16 +1,14 @@
-/*
- * === Footer style ===
+@charset "UTF-8";
+/** Holberton Practice Styles
+ * ----- Footer
  */
 
-/* Footer style */
 footer {
-            text-align: center;
-            background-color: #0f0;
-            height: 60px;
-            width: 100%;
-            bottom: 0;
-            justify-content: center;
-            position: absolute;
-            align-items: center;
-            display: flex;
+	background-color: #00FF00;
+	height: 60px;
+	line-height: 60px;
+	width: 100%;
+	bottom: 0px;
+	position: absolute;
+	text-align: center;
 }
