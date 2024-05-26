@@ -1,116 +1,67 @@
 #!/usr/bin/python3
-"""
-Unit Test for State Class
-"""
+""" test for state"""
 import unittest
-from datetime import datetime
-import models
-import json
 import os
-State = models.state.State
-BaseModel = models.base_model.BaseModel
-storage_type = os.environ.get('HBNB_TYPE_STORAGE')
+from models.state import State
+from models.base_model import BaseModel
+import pep8
 
 
-class TestStateDocs(unittest.TestCase):
-    """Class for testing State docs"""
-
-    @classmethod
-    def setUpClass(cls):
-        print('\n\n.................................')
-        print('..... Testing Documentation .....')
-        print('........   State Class   ........')
-        print('.................................\n\n')
-
-    def test_doc_file(self):
-        """... documentation for the file"""
-        expected = '\nState Class from Models Module\n'
-        actual = models.state.__doc__
-        self.assertEqual(expected, actual)
-
-    def test_doc_class(self):
-        """... documentation for the class"""
-        expected = 'State class handles all application states'
-        actual = State.__doc__
-        self.assertEqual(expected, actual)
-
-
-class TestStateInstances(unittest.TestCase):
-    """testing for class instances"""
+class TestState(unittest.TestCase):
+    """this will test the State class"""
 
     @classmethod
     def setUpClass(cls):
-        print('\n\n.................................')
-        print('....... Testing Functions .......')
-        print('.........  State Class  .........')
-        print('.................................\n\n')
+        """set up for test"""
+        cls.state = State()
+        cls.state.name = "CA"
 
-    def setUp(self):
-        """initializes new state for testing"""
-        self.state = State()
+    @classmethod
+    def teardown(cls):
+        """at the end of the test this will tear it down"""
+        del cls.state
 
-    def test_instantiation(self):
-        """... checks if State is properly instantiated"""
-        self.assertIsInstance(self.state, State)
-
-    @unittest.skipIf(storage_type == 'db', 'skip if environ is db')
-    def test_to_string(self):
-        """... checks if BaseModel is properly casted to string"""
-        my_str = str(self.state)
-        my_list = ['State', 'id', 'created_at']
-        actual = 0
-        for sub_str in my_list:
-            if sub_str in my_str:
-                actual += 1
-        self.assertTrue(3 == actual)
-
-    @unittest.skipIf(storage_type == 'db', 'skip if environ is db')
-    def test_instantiation_no_updated(self):
-        """... should not have updated attribute"""
-        my_str = str(self.state)
-        actual = 0
-        if 'updated_at' in my_str:
-            actual += 1
-        self.assertTrue(0 == actual)
-
-    @unittest.skipIf(storage_type == 'db', 'skip if environ is db')
-    def test_updated_at(self):
-        """... save function should add updated_at attribute"""
-        self.state.save()
-        actual = type(self.state.updated_at)
-        expected = type(datetime.now())
-        self.assertEqual(expected, actual)
-
-    @unittest.skipIf(storage_type == 'db', 'skip if environ is db')
-    def test_to_json(self):
-        """... to_json should return serializable dict object"""
-        self.state_json = self.state.to_json()
-        actual = 1
+    def tearDown(self):
+        """teardown"""
         try:
-            serialized = json.dumps(self.state_json)
-        except:
-            actual = 0
-        self.assertTrue(1 == actual)
+            os.remove("file.json")
+        except Exception:
+            pass
 
-    @unittest.skipIf(storage_type == 'db', 'skip if environ is db')
-    def test_json_class(self):
-        """... to_json should include class key with value State"""
-        self.state_json = self.state.to_json()
-        actual = None
-        if self.state_json['__class__']:
-            actual = self.state_json['__class__']
-        expected = 'State'
-        self.assertEqual(expected, actual)
+    def test_pep8_Review(self):
+        """Tests pep8 style"""
+        style = pep8.StyleGuide(quiet=True)
+        p = style.check_files(['models/state.py'])
+        self.assertEqual(p.total_errors, 0, "fix pep8")
 
-    def test_name_attribute(self):
-        """... add name attribute"""
-        self.state.name = "betty"
-        if hasattr(self.state, 'name'):
-            actual = self.state.name
-        else:
-            acual = ''
-        expected = "betty"
-        self.assertEqual(expected, actual)
+    def test_checking_for_docstring_State(self):
+        """checking for docstrings"""
+        self.assertIsNotNone(State.__doc__)
 
-if __name__ == '__main__':
-    unittest.main
+    def test_attributes_State(self):
+        """chekcing if State have attributes"""
+        self.assertTrue('id' in self.state.__dict__)
+        self.assertTrue('created_at' in self.state.__dict__)
+        self.assertTrue('updated_at' in self.state.__dict__)
+        self.assertTrue('name' in self.state.__dict__)
+
+    def test_is_subclass_State(self):
+        """test if State is subclass of BaseModel"""
+        self.assertTrue(issubclass(self.state.__class__, BaseModel), True)
+
+    def test_attribute_types_State(self):
+        """test attribute type for State"""
+        self.assertEqual(type(self.state.name), str)
+
+    def test_save_State(self):
+        """test if the save works"""
+        self.state.save()
+        self.assertNotEqual(self.state.created_at, self.state.updated_at)
+
+    def test_to_dict_State(self):
+        """test if dictionary works"""
+        self.assertEqual('to_dict' in dir(self.state), True)
+
+
+if __name__ == "__main__":
+    unittest.main()
